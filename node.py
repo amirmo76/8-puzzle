@@ -6,8 +6,10 @@ class Node:
         self.state = state
 
     def diff(self, node) -> list:
-        # return [i for i, j in zip(self.state, node.state) if i == j]
         return [i for i, j in zip(self.state, node.state) if i == j]
 
     def is_equal(self, node) -> bool:
-        return True if self.diff(node) else False
+        return True if len(self.diff(node)) == len(self.state) else False
+
+    def is_goal(self):
+        return self.is_equal(Node([[1, 2, 3], [4, 5, 6], [7, 8, 0]]))
