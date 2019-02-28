@@ -2,9 +2,10 @@ from node import Node
 from copy import deepcopy
 
 
-def move(node: Node, dir: str, index: tuple) -> Node:
-    new_node = deepcopy(node)
-    new_node.parent_node = node
+def move(node: Node, dir: str, index: tuple, new_id: int) -> Node:
+    new_node = Node(deepcopy(node.state), new_id)
+    new_node.parent_node = node.node_id
+    new_node.depth = node.depth + 1
     if dir == 'left':
         temp = node.state[index[0]][index[1] - 1]
         new_node.state[index[0]][index[1] - 1] = 0
@@ -26,6 +27,7 @@ def move(node: Node, dir: str, index: tuple) -> Node:
 
 def successor(node: Node):
     index = (-1, -1)
+    new_id = node.node_id
     for row in node.state:
         try:
             index = (node.state.index(row), row.index(0))
@@ -38,14 +40,18 @@ def successor(node: Node):
 
     if index[1] > 0:
         # generate left move
-        generated_nodes.append(move(node, 'left', index))
+        new_id += 1
+        generated_nodes.append(move(node, 'left', index, new_id))
     if index[1] < len(node.state[0]) - 1:
         # generate right move
-        generated_nodes.append(move(node, 'right', index))
+        new_id += 1
+        generated_nodes.append(move(node, 'right', index, new_id))
     if index[0] > 0:
         # generate up move
-        generated_nodes.append(move(node, 'up', index))
+        new_id += 1
+        generated_nodes.append(move(node, 'up', index, new_id))
     if index[0] < len(node.state) - 1:
         # generate bottom move
-        generated_nodes.append(move(node, 'bottom', index))
+        new_id += 1
+        generated_nodes.append(move(node, 'bottom', index, new_id))
     return generated_nodes
