@@ -13,3 +13,9 @@ class Node:
 
     def is_goal(self):
         return self.is_equal(Node([[1, 2, 3], [4, 5, 6], [7, 8, 0]]))
+
+    def __str__(self):
+        return self.state.__str__()
+
+    def __repr__(self):
+        return self.__str__()
