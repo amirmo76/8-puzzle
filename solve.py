@@ -1,10 +1,12 @@
-from fringe import Stack, Queue, No_Repeat_Stack, Fringe
+from fringe import Stack, Queue, NoRepeatStack, PriorityQueue, Fringe
 from successor import successor
 from node import Node
+from heurisitc import h
 import time
 
 
 def search_solution(init_node: Node, successor, fringe: Fringe, depth_limit: int = 0):
+    h(init_node)
     fringe.add(init_node)
     prev_depth = 0
 
@@ -18,13 +20,14 @@ def search_solution(init_node: Node, successor, fringe: Fringe, depth_limit: int
         if depth_limit and candidate_node.depth > depth_limit:
             continue
         for el in successor(candidate_node):
+            h(el)
             fringe.add(el)
     return False
 
 
 def iterative_depth_search_solution(init_node: Node, successor, depth_limit):
     this_round_depth_limit = 1
-    f = No_Repeat_Stack()
+    f = NoRepeatStack()
     while this_round_depth_limit <= depth_limit:
         result = search_solution(init_node, successor,
                                  f, this_round_depth_limit)
@@ -35,11 +38,11 @@ def iterative_depth_search_solution(init_node: Node, successor, depth_limit):
 
 
 # ===============Testing=============
-init_node = Node([[5, 3, 0], [6, 1, 8], [2, 4, 7]], 0)
-f = No_Repeat_Stack()
+init_node = Node([[6, 5, 1], [2, 0, 3], [4, 8, 7]], 0)
+f = PriorityQueue()
 start_time = time.time()
-# result = search_solution(init_node, successor, f, 10)
-result = iterative_depth_search_solution(init_node, successor, 20)
+result = search_solution(init_node, successor, f)
+# result = iterative_depth_search_solution(init_node, successor, 20)
 end_time = time.time()
 if not result:
     print('Did not found any solution!')

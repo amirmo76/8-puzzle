@@ -1,8 +1,9 @@
 class Node:
-    parent_node_id = 0
+    parent_node = None
     node_id = 0
     state = [[0 for i in range(3)] for j in range(3)]
     depth = 0
+    priority = 0  # the higher the better
 
     def __init__(self, state, id=0):
         self.state = state
@@ -11,8 +12,14 @@ class Node:
     def diff(self, node) -> list:
         return [i for i, j in zip(self.state, node.state) if i == j]
 
+    def diff_state(self, state) -> list:
+        return [i for i, j in zip(self.state, state) if i == j]
+
     def is_equal(self, node) -> bool:
         return True if len(self.diff(node)) == len(self.state) else False
+
+    def is_equal_state(self, state) -> bool:
+        return True if len(self.diff_state(state)) == len(self.state) else False
 
     def is_goal(self):
         return self.is_equal(Node([[1, 2, 3], [4, 5, 6], [7, 8, 0]]))
