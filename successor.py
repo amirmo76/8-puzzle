@@ -4,7 +4,7 @@ from copy import deepcopy
 
 def move(node: Node, dir: str, index: tuple, new_id: int) -> Node:
     new_node = Node(deepcopy(node.state), new_id)
-    new_node.parent_node = node.node_id
+    new_node.parent_node = node
     new_node.depth = node.depth + 1
     if dir == 'left':
         temp = node.state[index[0]][index[1] - 1]
